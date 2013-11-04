@@ -1,0 +1,12 @@
+# OASIS_START
+# DO NOT EDIT (digest: b6bb8ddc9590e3b48350197d51908075)
+version = "0.1"
+description = "Aarddict tools for OCaml"
+requires = "cstruct.syntax uuidm cryptokit atdgen zip"
+archive(byte) = "aard.cma"
+archive(byte, plugin) = "aard.cma"
+archive(native) = "aard.cmxa"
+archive(native, plugin) = "aard.cmxs"
+exists_if = "aard.cma"
+# OASIS_STOP
+

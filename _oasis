@@ -1,0 +1,44 @@
+OASISFormat: 0.3
+Name: aardtools
+Version: 0.1
+Synopsis: Aarddict tools for OCaml
+Authors: Vincent Bernardoff <vb@luminar.eu.org>
+License: ISC
+Plugins: META (0.3), DevFiles (0.3)
+BuildTools: ocamlbuild
+
+Library aard
+  Path: lib
+  Modules: Aard, Aard_j, Aard_t, Util
+  BuildDepends: cstruct.syntax, uuidm, cryptokit, atdgen, zip
+  CompiledObject: best
+
+Executable xdxf_of_wb
+  Path: src
+  MainIs: xdxf_of_wb.ml
+  BuildDepends: text, xmlm
+  CompiledObject: best
+
+Executable json_of_wb
+  Path: src
+  MainIs: json_of_wb.ml
+  BuildDepends: text, re.pcre
+  CompiledObject: best
+
+Executable aard_of_json
+  Path: src
+  MainIs: aard_of_json.ml
+  BuildDepends: aard, ocplib-endian
+  CompiledObject: best
+
+Executable compile_aard
+  Path: src
+  MainIs: compile_aard.ml
+  BuildDepends: aard, cstruct
+  CompiledObject: best
+
+Executable aard_test
+  Path: test
+  MainIs: aard_test.ml
+  BuildDepends: aard, cstruct.unix
+  CompiledObject: best
