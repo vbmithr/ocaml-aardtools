@@ -81,7 +81,7 @@ let () =
   let volume = ref 1 in
   let of_ = ref 1 in
   let speclist = align [
-      "--version", Set_int version, "<int> Version of the .arr file (default 1).";
+      "--version", Set_int version, "<int> Version of the .aar file (default 1).";
       "--volume", Set_int volume, "<int> Volume number of the dictionary to be created (default 1).";
       "--of", Set_int of_, "<int> Number of volumes of the dictionary to be created (default 1).";
     ] in
