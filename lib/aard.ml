@@ -10,16 +10,45 @@ cstruct aard_header {
   uint32_t article_offset;
   uint8_t index1_item_format[4];
   uint8_t key_length_format[2];
-  uint8_t article_length_format[2]
+  uint8_t article_length_format[2];
 } as big_endian
+
+type metadata = {
+  article_count: int;
+  article_count_is_volume_total: bool;
+  index_language: string;
+  article_language: string;
+  title: string;
+  version: string;
+  description: string;
+  copyright: string;
+  license: string;
+  source: string;
+} [@@deriving Yojson]
+
+type wb = (string * string) list [@@deriving Yojson]
 
 exception Not_an_aard_file
 exception Corrupted_header_field of string
 
+let compress_to_buffer str buffer =
+  let strlen = String.length str in
+  let pos = ref 0 in
+  Buffer.clear buffer;
+  Zlib.compress
+    (fun buf ->
+       let len = String.length buf in
+       let minlen = min len (strlen - !pos) in
+       String.blit str !pos buf 0 minlen;
+       pos := !pos + minlen;
+       minlen
+    )
+    (fun buf len -> Buffer.add_substring buffer buf 0 len)
+
 let sha1sum ic =
   let open Cryptokit in
   let hash = Hash.sha1 () in
-  let buf = String.create 4096 in
+  let buf = Bytes.create 4096 in
   really_input ic buf 0 44;
   if String.sub buf 0 4 <> "aard" then raise Not_an_aard_file;
   let old_chksum = String.sub buf 4 40 in

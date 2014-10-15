@@ -1,10 +1,8 @@
-open Aard_j
-
-let hdr = String.create 16
+let hdr = Bytes.create 16
 let compressed_buf = Buffer.create 13
 
 let compress_to_oc oc str hdr_size =
-  Util.compress_to_buffer str compressed_buf;
+  Aard.compress_to_buffer str compressed_buf;
   let contents = Buffer.contents compressed_buf in
   let contents_len = Buffer.length compressed_buf in
   Buffer.clear compressed_buf;
