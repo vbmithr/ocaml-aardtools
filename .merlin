@@ -1,0 +1,13 @@
+PRJ aardtools
+S lib
+S src
+B _build/lib
+B _build/src
+PKG cstruct.syntax
+PKG uuidm
+PKG zip
+PKG ppx_deriving_yojson
+PKG ocplib-endian
+PKG cryptokit
+PKG yojson
+PKG jsonm

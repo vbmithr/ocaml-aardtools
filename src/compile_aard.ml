@@ -1,8 +1,7 @@
-open Aard_j
-open Aard_t
 open Aard
+open Aard_header
 
-let pipe_buf = String.create 4096
+let pipe_buf = Bytes.create 4096
 
 let pipe oc ic =
   try
@@ -24,13 +23,14 @@ let hash_ic hash ic =
   with End_of_file -> ()
 
 let main aard_oc meta_ic idx1_ic idx2_ic ar_ic version volume of_ =
-  let lexbuf = Lexing.from_channel meta_ic in
-  let lexer_state = Yojson.init_lexer () in
-  let meta = read_metadata lexer_state lexbuf in
+  let meta_json = Yojson.Safe.from_channel meta_ic in
+  let meta = match metadata_of_yojson meta_json with
+    | `Error s -> failwith "Corrupted metadata"
+    | `Ok meta -> meta in
   let idx_count = meta.article_count in
-  let meta_string = string_of_metadata meta in
+  let meta_string = Yojson.Safe.to_string ~std:true meta_json in
   let buf = Buffer.create 1024 in
-  Util.compress_to_buffer meta_string buf;
+  compress_to_buffer meta_string buf;
   let meta_gzip = Buffer.contents buf in
   let meta_gzip_len = Buffer.length buf in
   let ar_offset =
@@ -88,10 +88,13 @@ let () =
   let usage_msg = "Usage: " ^ Sys.argv.(0) ^ " [options] basename\nOptions are:" in
   let anon_fun s = basename := s in
   parse speclist anon_fun usage_msg;
-  let aard_oc = open_out_bin (!basename ^ ".aar") in
-  let meta_ic = open_in (!basename ^ ".meta") in
-  let idx1_ic = open_in_bin (!basename ^ ".idx1") in
-  let idx2_ic = open_in_bin (!basename ^ ".idx2") in
-  let ar_ic = open_in_bin (!basename ^ ".ar") in
-  main aard_oc meta_ic idx1_ic idx2_ic ar_ic !version !volume !of_
+  if !basename = "" then
+    (Arg.usage speclist usage_msg; exit 1)
+  else
+    let aard_oc = open_out_bin (!basename ^ ".aar") in
+    let meta_ic = open_in (!basename ^ ".meta") in
+    let idx1_ic = open_in_bin (!basename ^ ".idx1") in
+    let idx2_ic = open_in_bin (!basename ^ ".idx2") in
+    let ar_ic = open_in_bin (!basename ^ ".ar") in
+    main aard_oc meta_ic idx1_ic idx2_ic ar_ic !version !volume !of_
 

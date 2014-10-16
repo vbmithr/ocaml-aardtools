@@ -1,0 +1,8 @@
+version = "0.1"
+description = "Aarddict tools"
+requires = "cstruct, ocplib-endian, yojson, ppx_deriving_yojson, uuidm, cryptokit, zip"
+archive(byte) = "aard.cma"
+archive(byte, plugin) = "aard.cma"
+archive(native) = "aard.cmxa"
+archive(native, plugin) = "aard.cmxs"
+exists_if = "aard.cma"

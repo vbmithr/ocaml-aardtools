@@ -14,8 +14,8 @@ let convert_str charset_from cstr =
 let encode ic oc lang_from lang_to charset_from charset_to name descr=
   let open Xmlm in
   let out = make_output ~indent:None (`Channel oc) in
-  let lang1 = String.create 31 in
-  let lang2 = String.create 53 in
+  let lang1 = Bytes.create 31 in
+  let lang2 = Bytes.create 53 in
   output out (`Dtd None);
   output out (`El_start (st ~attrs:["lang_from", lang_from;
                                     "lang_to", lang_to;

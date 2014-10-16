@@ -1,0 +1,6 @@
+2014-10-16:
+	* Switched from oasis to topkg.
+	* Remove atdgen.
+	* aard_of_json: Use jsonm to parse json input.
+2013-11-04:
+	* First release.

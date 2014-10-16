@@ -11,8 +11,8 @@ let convert_str charset_from cstr =
   Encoding.recode_string ~src:charset_from ~dst:"UTF-8" str
 
 let main ic oc k_chset v_chset =
-  let k = String.create 31 in
-  let v = String.create 53 in
+  let k = Bytes.create 31 in
+  let v = Bytes.create 53 in
   fprintf oc "[";
   try
     while true do
